@@ -1,0 +1,4 @@
+ofxXmlSettings
+ofxBox2d
+ofxGLWarper
+ofxOpenCv
