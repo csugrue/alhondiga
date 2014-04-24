@@ -26,8 +26,7 @@ class ofApp : public ofBaseApp{
         
         vector <float> left;
         vector <float> right;
-        vector <float> volHistory;
-            
+    
         float smoothedVol;
         float scaledVol;
 };

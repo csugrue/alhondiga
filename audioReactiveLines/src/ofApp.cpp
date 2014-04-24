@@ -9,7 +9,6 @@ void ofApp::setup(){
 	
 	left.assign(bufferSize, 0.0);
 	right.assign(bufferSize, 0.0);
-	volHistory.assign(400, 0.0);
 	
 	smoothedVol     = 0.0;
 	scaledVol		= 0.0;
@@ -17,8 +16,6 @@ void ofApp::setup(){
 	soundStream.setup(this, 0, 2, 44100, bufferSize, 2);
 	
     ofSetCurveResolution(50);
-    ofSetBackgroundAuto(false);
-    ofEnableAlphaBlending();
 
 }
 
@@ -26,33 +23,22 @@ void ofApp::setup(){
 void ofApp::update(){
     scaledVol = ofMap(smoothedVol, 0.0, 0.17, 0.0, 1.0, true);
 	
-	// record the volume into an array
-	volHistory.push_back( scaledVol );
-	
-	//if we are bigger the the size we want to record - lets drop the oldest value
-	if( volHistory.size() >= 400 ){
-		volHistory.erase(volHistory.begin(), volHistory.begin()+1);
-	}
+
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
     int y = ofGetHeight()/2;
     int x = ofGetWidth()/2;
     
-    ofFill();
-    ofSetColor(0,50);
-    ofRect(0,0,x*2,y*2);
-    
     ofNoFill();
-    ofSetColor(255,200);
+    ofSetColor(255);
     float distort = ofMap(scaledVol,0,1,0,10);
     
     for(int i = 0; i < 50; i+=10){
        
-        ofSetColor(255,200);
-        ofSetLineWidth(1);
         ofBezier(0,y,
                  (x/2),y-(distort*(i*20)),
                  (x/4),y-(i*4),
