@@ -7,17 +7,15 @@ void ofApp::setup(){
 	kinect.setRegistration(true);
     
 	kinect.init();
-	//kinect.init(true); // shows infrared instead of RGB video image
-	//kinect.init(false, false); // disable video image (faster fps)
-	
 	kinect.open();		// opens first available kinect
     
     grayImage.allocate(kinect.width, kinect.height);
 	grayThreshNear.allocate(kinect.width, kinect.height);
 	grayThreshFar.allocate(kinect.width, kinect.height);
 	
-	nearThreshold = 230;
-	farThreshold = 70;
+    // thresholds good for close range (lower farThreshold to increase range)
+	nearThreshold = 255;
+	farThreshold = 150;
 	bThreshWithOpenCV = true;
 	
 	ofSetFrameRate(60);
@@ -33,6 +31,7 @@ void ofApp::update(){
 	
 	// there is a new frame and we are connected
 	if(kinect.isFrameNew()) {
+        
         // load grayscale depth image from the kinect source
 		grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
 		
@@ -62,15 +61,7 @@ void ofApp::update(){
 		// update the cv images
 		grayImage.flagImageChanged();
 		
-		// find contours which are between the size of 20 pixels and 1/3 the w*h pixels.
-		// also, find holes is set to true so we will get interior contours as well....
-		//input,
-        //int minArea,
-        //int maxArea,
-        //int nConsidered,
-        //bool bFindHoles,
-        //bool bUseApproximation
-        
+		// get contours
         contourFinder.findContours(grayImage, 100, (kinect.width*kinect.height)/2, 4, false, true);
         
         
@@ -96,7 +87,14 @@ void ofApp::draw(){
             contourSimple.lineTo(contourFinder.blobs[i].pts[j].x*scaleW,contourFinder.blobs[i].pts[j].y*scaleH);
         }
         contourSimple.close();
-        contourSimple.simplify(3);
+        
+        // draw normal
+        ofSetColor(0,255,255);
+        contourSimple.draw();
+        
+        // simplify and draw
+        ofSetColor(255);
+        contourSimple.simplify(10);
         contourSimple.draw();
     }
 }
