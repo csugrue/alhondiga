@@ -37,11 +37,10 @@ void ofApp::draw(){
         }
     ofEndShape();
     
+    if(warper.isActive()) warper.draw();
+
     warper.end();
 	
-    ofSetLineWidth(3);
-    if(warper.isActive()) warper.draw();
-    ofSetLineWidth(1);
     
     ofSetColor(255);
     ofDrawBitmapString("press SPACE to toggle warper enable/disable", 30,30);

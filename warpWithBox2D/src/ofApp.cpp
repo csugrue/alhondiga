@@ -78,14 +78,14 @@ void ofApp::draw(){
 		edges[i].get()->draw();
 	}
     
-    
-    warper.end();
-    
-	// draw warper when editing
+    // draw warper when editing
     if(warper.isActive()){
         ofSetColor(255,0,255);
         warper.draw();
     }
+    warper.end();
+    
+	
     
     ofSetColor(255);
     ofDrawBitmapString("press SPACE to toggle warper enable/disable", 30,30);
