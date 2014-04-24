@@ -31,7 +31,7 @@ void ofApp::setup(){
     // box2d
 	box2d.init();
 	box2d.setGravity(0, 30);
-	box2d.createGround();
+	//box2d.createGround();
 	box2d.setFPS(30.0);
     
 	
@@ -86,8 +86,9 @@ void ofApp::update(){
     
     
     // remove offscreen objects
+    //ofRemove(circles, ofxBox2dBaseShape::shouldRemoveOffScreen);
     ofRemove(circles, removeShapeOffScreen);
-    
+
     // add some circles every so often
 	if((int)ofRandom(0, 10) == 0) {
 		ofPtr<ofxBox2dCircle> c = ofPtr<ofxBox2dCircle>(new ofxBox2dCircle);
@@ -147,12 +148,59 @@ void ofApp::draw(){
 		circles[i].get()->draw();
 	}
 	
+    ofSetColor(255, 255, 255);
+	stringstream reportStream;
+    reportStream << "using opencv threshold = " << bThreshWithOpenCV <<" (press spacebar)" << endl
+	<< "set near threshold " << nearThreshold << " (press: + -)" << endl
+	<< "set far threshold " << farThreshold << " (press: < >) num blobs found ";
+    ofDrawBitmapString(reportStream.str(), 20, 652);
 
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    switch (key) {
+		case ' ':
+			bThreshWithOpenCV = !bThreshWithOpenCV;
+			break;
+		case '>':
+		case '.':
+			farThreshold ++;
+			if (farThreshold > 255) farThreshold = 255;
+			break;
+			
+		case '<':
+		case ',':
+			farThreshold --;
+			if (farThreshold < 0) farThreshold = 0;
+			break;
+			
+		case '+':
+		case '=':
+			nearThreshold ++;
+			if (nearThreshold > 255) nearThreshold = 255;
+			break;
+			
+		case '-':
+			nearThreshold --;
+			if (nearThreshold < 0) nearThreshold = 0;
+			break;
+			
+		case 'w':
+			kinect.enableDepthNearValueWhite(!kinect.isDepthNearValueWhite());
+			break;
+			
+		case 'o':
+			//kinect.setCameraTiltAngle(angle); // go back to prev tilt
+			//kinect.open();
+			break;
+			
+		case 'c':
+			//kinect.setCameraTiltAngle(0); // zero the tilt
+			//kinect.close();
+			break;
+    }
 }
 
 //--------------------------------------------------------------
