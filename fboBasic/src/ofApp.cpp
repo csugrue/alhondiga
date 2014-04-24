@@ -11,8 +11,7 @@ void ofApp::setup(){
     warperA.setup(300,300);
     warperB.setup(300,300);
     warperA.activate();
-    warperB.activate();
-    
+    //warperB.activate();
     
     warperB.setCorner(ofxGLWarper::TOP_LEFT, ofPoint(350,0));
     warperB.setCorner(ofxGLWarper::TOP_RIGHT, ofPoint(650,0));
@@ -24,27 +23,28 @@ void ofApp::setup(){
 void ofApp::update(){
     
     fbo.begin();
-    ofSetColor(255,0,0);
-    ofRect(0,0,ofGetWidth(),ofGetHeight());
-    ofSetColor(255);
-    ofEllipse(300,200,200,200);
+        ofSetColor(255,0,0);
+        ofRect(0,0,ofGetWidth(),ofGetHeight());
+        ofSetColor(255);
+        ofEllipse(300,200,200,200);
     fbo.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    
     ofTexture tex = fbo.getTextureReference();
+    
     warperA.begin();
-    tex.drawSubsection(0, 0, 300, 300, 0, 0);
-    ofSetColor(255);
-    warperA.draw();
-
+        tex.drawSubsection(0, 0, 300, 300, 0, 0);
+        ofSetColor(255);
+        warperA.draw();
     warperA.end();
     
     warperB.begin();
-    tex.drawSubsection(0, 0, 300, 300, 300, 0);
-    ofSetColor(255);
-    warperB.draw();
+        tex.drawSubsection(0, 0, 300, 300, 300, 0);
+        ofSetColor(255);
+        warperB.draw();
     warperB.end();
 
    
@@ -52,7 +52,15 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if( key == 'a'){
+        if(warperB.isActive()) warperB.deactivate();
+        warperA.activate();
+    }
+    
+    if( key == 'b'){
+        if(warperA.isActive()) warperA.deactivate();
+        warperB.activate();
+    }
 }
 
 //--------------------------------------------------------------
