@@ -22,7 +22,6 @@ class ofApp : public ofBaseApp{
 		
     
         ofFbo fbo;
-        ofxGLWarper warperA;
-        ofxGLWarper warperB;
+        ofxGLWarper warper;
     
 };

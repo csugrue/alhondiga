@@ -34,6 +34,8 @@ class ofApp : public ofBaseApp{
     
         // box2d edges that area created from the drawn lines
         vector <ofPtr<ofxBox2dEdge> >       edges;
+    
+        ofFbo fbo;
 
 		
 };

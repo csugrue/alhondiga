@@ -25,10 +25,12 @@ void ofApp::draw(){
     ofFill();
     ofRect(0,0,ofGetWidth(),ofGetHeight());
     
-    ofSetColor(255,0,255);
+    ofSetColor(255);
+    ofSetLineWidth(3);
     for(int i = 0; i < pts.size(); i++){
         ofEllipse(pts[i].x, pts[i].y, 4, 4);
     }
+    ofSetLineWidth(1);
     
     ofNoFill();
     ofBeginShape();
@@ -51,6 +53,8 @@ void ofApp::keyPressed(int key){
     if(key == ' '){
         if(warper.isActive()) warper.deactivate();
         else warper.activate();
+    }else if( key == 'f'){
+        ofToggleFullscreen();
     }
 }
 

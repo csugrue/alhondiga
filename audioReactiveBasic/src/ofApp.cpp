@@ -29,7 +29,7 @@ void ofApp::setup(){
 void ofApp::update(){
 	
     //lets scale the vol up to a 0-1 range
-	scaledVol = ofMap(smoothedVol, 0.0, 0.17, 0.0, 1.0, true);
+	scaledVol = ofMap(smoothedVol, 0.0, 0.17, 0.0, 500.0, true);
     
 	
 }
@@ -39,7 +39,7 @@ void ofApp::draw(){
     
     ofSetColor(245, 58, 135);
     ofFill();
-    ofCircle(ofGetWidth()/2, ofGetHeight()/2, scaledVol * 500.f);
+    ofCircle(ofGetWidth()/2, ofGetHeight()/2, scaledVol);
 
 }
 //--------------------------------------------------------------
@@ -69,10 +69,10 @@ void ofApp::audioIn(float * input, int bufferSize, int nChannels){
 	curVol = sqrt( curVol );
 	
 	// make smooth vol a blend of previous and current
-    smoothedVol *= 0.93;
-	smoothedVol += 0.07 * curVol;
-	
-	
+    smoothedVol *= 0.99;
+	smoothedVol += 0.01 * curVol;
+	// smoothedVol = .9*smoothedVol + .1*curVol;
+	//smoothedVol = curVol;
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){

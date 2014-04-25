@@ -5,7 +5,7 @@ void ofApp::setup(){
     
     ofBackground(0);
     
-    int bufferSize = 128;
+    int bufferSize = 256;
 	
 	left.assign(bufferSize, 0.0);
 	right.assign(bufferSize, 0.0);
@@ -37,16 +37,20 @@ void ofApp::draw(){
     ofSetColor(255);
     float distort = ofMap(scaledVol,0,1,0,10);
     
-    for(int i = 0; i < 50; i+=10){
-       
+    for(int i = 0; i < 10; i++){
+        
+        ofEllipse((x/2),y-(distort*(i*100)),4,4);
+        
+        // draw above
         ofBezier(0,y,
-                 (x/2),y-(distort*(i*20)),
-                 (x/4),y-(i*4),
+                 (x/2),y-(distort*(i*100)),
+                 (x/4),y-(i*40),
                  x*2,y);
         
+        // draw below
         ofBezier(0,y,
-                 (x/2),y+(distort*(i*20)),
-                 (x/4),y+(i*4),
+                 (x/2),y+(distort*(i*100)),
+                 (x/4),y+(i*40),
                  x*2,y);
     }
 }

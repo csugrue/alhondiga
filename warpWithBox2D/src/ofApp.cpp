@@ -13,14 +13,16 @@ static bool removeShapeOffScreen(ofPtr<ofxBox2dBaseShape> shape) {
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    fbo.allocate(1008,800);
+    
     // setup the warper
-    warper.setup(ofGetWidth(),ofGetHeight());
+    warper.setup(1008,800);//ofGetWidth(),ofGetHeight());
 	warper.activate();  // turn on for adjusting
     
     // box2d
 	box2d.init();
 	box2d.setGravity(0, 30);
-	box2d.createGround();
+	box2d.createGround(0,800,1008,800);
 	box2d.setFPS(30.0);
     
     
@@ -38,7 +40,7 @@ void ofApp::update(){
 	if((int)ofRandom(0, 10) == 0) {
 		ofPtr<ofxBox2dCircle> c = ofPtr<ofxBox2dCircle>(new ofxBox2dCircle);
 		c.get()->setPhysics(0.2, 0.2, 0.002);
-		c.get()->setup(box2d.getWorld(), ofRandom(20, 50), -20, ofRandom(3, 10));
+		c.get()->setup(box2d.getWorld(), ofRandom(20, 50), -20, ofRandom(5, 20));
         c.get()->setVelocity(0, 10); // shoot them down!
 		circles.push_back(c);
 	}
@@ -53,12 +55,13 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    // draw everything that will be warped between warper.begin() and end()
-    warper.begin();
     
-    // draw background rectangle in the warped area
+    
+    fbo.begin();
+    
+    ofBackground(0);
     ofFill();
-    ofSetColor(80);
+    ofSetColor(80,80,80);
     ofRect(0,0,ofGetWidth(),ofGetHeight());
 
     // draw the circles
@@ -69,16 +72,20 @@ void ofApp::draw(){
 	}
 	
 	// draw the lines
-    ofSetHexColor(0x444342);
-	ofNoFill();
+    ofSetColor(90);
+	ofNoFi  ll();
 	for (int i=0; i<lines.size(); i++) {
 		lines[i].draw();
 	}
 	for (int i=0; i<edges.size(); i++) {
 		edges[i].get()->draw();
 	}
+    fbo.end();
     
-    // draw warper when editing
+    ofSetColor(255);
+    
+    warper.begin();// draw warper when editing
+    fbo.draw(0,0);
     if(warper.isActive()){
         ofSetColor(255,0,255);
         warper.draw();
@@ -118,6 +125,10 @@ void ofApp::keyPressed(int key){
 		lines.clear();
 		edges.clear();
 	}
+    
+    if( key == 'f'){
+        ofToggleFullscreen();
+    }
 }
 
 //--------------------------------------------------------------
